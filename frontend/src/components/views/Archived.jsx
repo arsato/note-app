@@ -8,7 +8,7 @@ const Archived = () => {
     <main className="container mx-auto mt-6">
       <div className="flex justify-between mb-6">
         <div className="flex gap-6">
-          <h2 className="text-3xl font-bold text-gray-800">My Notes</h2>
+          <h2 className="text-3xl font-bold text-gray-800">Archived Notes</h2>
         </div>
 
         <button

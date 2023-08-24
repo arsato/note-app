@@ -1,10 +1,8 @@
 import { useState } from "react";
 import Delete from "../modals/Delete";
-import CreateEditNote from "../modals/CreateEditNote";
 
 const Note = () => {
-  const [isShown, setIsShown] = useState(false);
-  const [form, setForm] = useState(false);
+  const [showDelete, setShowDelete] = useState(false);
 
   return (
     <div>
@@ -23,14 +21,13 @@ const Note = () => {
         <div className="col-span-1">
           <div className="grid gap-3 justify-end">
             {/* <i className="fa-solid fa-arrow-up-from-bracket"></i> */}
-          <i onClick={() => setForm(true)}className="fa-solid fa-box-archive hover:cursor-pointer"></i>
+          <i className="fa-solid fa-box-archive hover:cursor-pointer"></i>
             <i className="fa-solid fa-pen hover:cursor-pointer"></i>
-            <i onClick={() => setIsShown(true)} className="fa-solid fa-trash hover:cursor-pointer"></i>
+            <i onClick={() => setShowDelete(true)} className="fa-solid fa-trash hover:cursor-pointer"></i>
           </div>
         </div>
       </a>
-      {isShown && <Delete setIsShown={setIsShown} />}
-      {form && <CreateEditNote setForm={setForm}/>}
+      {showDelete && <Delete setShowDelete={setShowDelete} />}
     </div>
   );
 };
