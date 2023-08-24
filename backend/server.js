@@ -4,6 +4,7 @@ const app = express();
 const db = require("./models");
 const cors = require("cors");
 const routes = require("./routes/notes.routes");
+const createNotes = require("./seed/notes.seeds");
 
 app.use(cors());
 app.use(express.json());
@@ -16,10 +17,11 @@ app.use("/", (req, res) => {
   res.json({ message: "Welcome to notes application." });
 });
 
-db.sequelize.sync({ force: true }).then(() => {
-  console.log("Note model synced");
+db.sequelize.sync({ force: true }).then(async () => {
+  createNotes();
+  app.listen(PORT, () => {
+    console.log(`Server up in port ${PORT}`);
+  });
 });
 
-app.listen(PORT, () => {
-  console.log(`Server up in port ${PORT}`);
-});
+

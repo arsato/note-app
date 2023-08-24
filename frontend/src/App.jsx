@@ -1,10 +1,15 @@
+import { useState } from "react";
 import Router from "./components/router/Router";
+import Context from "./Context";
 
 function App() {
+  const [userNotes, setUserNotes] = useState(null);
 
   return (
     <>
-    <Router />
+      <Context.Provider value={{ userNotes, setUserNotes }}>
+        <Router />
+      </Context.Provider>
     </>
   );
 }

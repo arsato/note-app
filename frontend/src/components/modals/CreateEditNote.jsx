@@ -1,13 +1,50 @@
-import React, { useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
+import axios from "axios";
+import Context from "../../Context";
 
-const CreateEditNote = ({ setShowCreate }) => {
+const CreateEditNote = ({
+  setShowCreate,
+  id,
+  title,
+  content,
+  updatedAt,
+  isArchived,
+}) => {
+  const url = "http://localhost:3000/api/notes";
+  const { setUserNotes } = useContext(Context);
+
+  const getData = async () => {
+    try {
+      const { data: notesList } = await axios.get(url);
+      setFormData({
+        ...formData,
+        title: title,
+        content: content,
+      });
+      setUserNotes(notesList);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const getArchiveData = async () => {
+    const endpoint = "/archived";
+    try {
+      const { data: notesList } = await axios.get(url + endpoint);
+      setFormData({
+        ...formData,
+        title: title,
+        content: content,
+      });
+      setUserNotes(notesList);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   const [formData, setFormData] = useState({
-    id: "",
     title: "",
     content: "",
-    date: "",
-    archived: "",
-    categories: "",
   });
 
   const handleInputChange = (e) => {
@@ -17,6 +54,55 @@ const CreateEditNote = ({ setShowCreate }) => {
       [name]: value,
     }));
   };
+
+  const handleCreateEdit = () => {
+    if (id) {
+      handleUpdate();
+    } else {
+      handlePublish();
+    }
+  };
+
+  const handlePublish = async (e) => {
+    const { title, content } = formData;
+    try {
+      if (!title) return alert("Must have at least a title");
+      await axios.post(url, formData);
+      setShowCreate(false);
+      getData();
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const handleUpdate = async (e) => {
+    const endpoint = `/${id}`;
+    const { title, content } = formData;
+    if (isArchived === true) {
+      try {
+        if (!title) return alert("Must have at least a title");
+        await axios.put(url + endpoint, formData);
+        setShowCreate(false);
+        getArchiveData();
+      } catch (error) {
+        console.log(error);
+      }
+    } else {
+      try {
+        if (!title) return alert("Must have at least a title");
+        await axios.put(url + endpoint, formData);
+        setShowCreate(false);
+        getData();
+      } catch (error) {
+        console.log(error);
+      }
+    }
+  };
+
+  useEffect(() => {
+    isArchived ? getArchiveData() : getData();
+  }, []);
+
   return (
     <div>
       <div
@@ -99,6 +185,7 @@ const CreateEditNote = ({ setShowCreate }) => {
                   <button
                     type="button"
                     className="inline-flex w-full justify-center rounded-md bg-green-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-gren-500 sm:ml-3 sm:w-auto"
+                    onClick={handleCreateEdit}
                   >
                     Save
                   </button>

@@ -1,6 +1,6 @@
 import { Route, Routes } from "react-router-dom";
 import MyNotes from "../views/MyNotes";
-import Archived from "../views/Archived";
+import Archived from "../views/ArchivedNotes";
 
 const Router = () => {
   return (

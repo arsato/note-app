@@ -6,6 +6,12 @@ router.use(express.json());
 
 router.post("/", notes.create);
 
-router.get("/", notes.findAll);
+router.get("/", notes.findAllActive);
+
+router.get("/archived", notes.findAllArchived);
+
+router.put("/:id", notes.update);
+
+router.delete("/:id", notes.delete);
 
 module.exports = router;
