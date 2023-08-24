@@ -1,8 +1,14 @@
+import { useState } from "react";
+import Delete from "../modals/Delete";
+import CreateEditNote from "../modals/CreateEditNote";
+
 const Note = () => {
+  const [isShown, setIsShown] = useState(false);
+  const [form, setForm] = useState(false);
+
   return (
     <div>
       <a
-        href="#"
         className="grid grid-cols-6 place-items-center w-[450px] p-2 bg-gray-200 border border-gray-400 rounded-lg shadow hover:bg-gray-100"
       >
         <i className="col-span-1 fa-solid fa-note-sticky fa-5x"></i>
@@ -16,13 +22,15 @@ const Note = () => {
         </div>
         <div className="col-span-1">
           <div className="grid gap-3 justify-end">
-            {/* <i class="fa-solid fa-arrow-up-from-bracket"></i> */}
-            <i class="fa-solid fa-box-archive"></i>
-            <i class="fa-solid fa-pen"></i>
-            <i class="fa-solid fa-trash"></i>
+            {/* <i className="fa-solid fa-arrow-up-from-bracket"></i> */}
+          <i onClick={() => setForm(true)}className="fa-solid fa-box-archive hover:cursor-pointer"></i>
+            <i className="fa-solid fa-pen hover:cursor-pointer"></i>
+            <i onClick={() => setIsShown(true)} className="fa-solid fa-trash hover:cursor-pointer"></i>
           </div>
         </div>
       </a>
+      {isShown && <Delete setIsShown={setIsShown} />}
+      {form && <CreateEditNote setForm={setForm}/>}
     </div>
   );
 };
