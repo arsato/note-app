@@ -2,8 +2,10 @@ import { useContext, useEffect, useState } from "react";
 import Note from "../cards/Note";
 import { useNavigate } from "react-router-dom";
 import CreateEditNote from "../modals/CreateEditNote";
+import test from "../modals/test";
 import axios from "axios";
 import Context from "../../Context";
+import Test from "../modals/test";
 
 const MyNotes = () => {
   const navigate = useNavigate();
@@ -63,6 +65,7 @@ const MyNotes = () => {
           ))}
       </div>
       {showCreate && <CreateEditNote setShowCreate={setShowCreate} />}
+      {/* <Test /> */}
     </main>
   );
 };

@@ -1,12 +1,14 @@
 import { useContext, useState } from "react";
 import Delete from "../modals/Delete";
 import CreateEditNote from "../modals/CreateEditNote";
+import NoteDetail from "../modals/NoteDetail";
 import axios from "axios";
 import Context from "../../Context";
 
 const Note = ({ id, title, content, updatedAt, isArchived }) => {
   const [showDelete, setShowDelete] = useState(false);
   const [showCreate, setShowCreate] = useState(false);
+  const [showDetail, setShowDetail] = useState(false);
   const { setUserNotes } = useContext(Context);
   const url = "http://localhost:3000/api/notes";
 
@@ -61,7 +63,7 @@ const Note = ({ id, title, content, updatedAt, isArchived }) => {
     <div>
       <a className="grid grid-cols-6 place-items-center w-[450px] p-2 bg-gray-200 border border-gray-400 rounded-lg shadow hover:bg-gray-100">
         <i className="col-span-1 fa-solid fa-note-sticky fa-5x"></i>
-        <div className="col-span-4">
+        <div onClick={() => setShowDetail(true)} className="col-span-4 hover:cursor-pointer">
           <h5 className="mb-2 text-2xl font-bold tracking-tight text-black">
             {title}
           </h5>
@@ -101,6 +103,16 @@ const Note = ({ id, title, content, updatedAt, isArchived }) => {
           updatedAt={updatedAt}
           isArchived={isArchived}
           setShowCreate={setShowCreate}
+        />
+      )}
+            {showDetail && (
+        <NoteDetail
+          id={id}
+          title={title}
+          content={content}
+          updatedAt={updatedAt}
+          isArchived={isArchived}
+          setShowDetail={setShowDetail}
         />
       )}
     </div>
