@@ -4,10 +4,11 @@ import Context from "./Context";
 
 function App() {
   const [userNotes, setUserNotes] = useState(null);
+  const [tagNames, setTagNames] = useState(null)
 
   return (
     <>
-      <Context.Provider value={{ userNotes, setUserNotes }}>
+      <Context.Provider value={{ userNotes, setUserNotes, tagNames, setTagNames }}>
         <Router />
       </Context.Provider>
     </>

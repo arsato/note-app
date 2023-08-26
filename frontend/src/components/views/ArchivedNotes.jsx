@@ -11,13 +11,23 @@ const Archived = () => {
   const [showCreate, setShowCreate] = useState(false);
   const { userNotes, setUserNotes } = useContext(Context);
   const [loaded, setLoaded] = useState(false);
+  const [tags, setTags] = useState({});
+  const [tagNames, setTagNames] = useState([]);
 
-  const url = "http://localhost:3000/api/notes/archived";
+  const url = "http://localhost:3000/api";
 
   const getData = async () => {
+    const noteEndpoint = "/notes";
     try {
-      const { data: notesList } = await axios.get(url);
+      const { data: notesList } = await axios.get(url + noteEndpoint);
       setUserNotes(notesList);
+      const tagEndpoint = "/tags";
+      const { data: tagList } = await axios.get(url + tagEndpoint);
+      setTags(tagList);
+      let names = tagList.map((ele) => ({
+        name: ele.name,
+      }));
+      setTagNames(names);
     } catch (error) {
       console.log(error);
     } finally {
@@ -46,16 +56,23 @@ const Archived = () => {
 
       <div className="flex flex-row gap-4 flex-wrap justify-center">
         {loaded &&
-          userNotes.map(({ noteId, title, content, updatedAt, isArchived }) => (
-            <Note
-              key={noteId + "A"}
-              id={noteId}
-              title={title}
-              content={content}
-              updatedAt={updatedAt}
-              isArchived={isArchived}
-            />
-          ))}
+          userNotes.map(
+            ({ noteId, title, content, updatedAt, isArchived, tags }) => {
+              if (isArchived == true) {
+                return (
+                  <Note
+                    key={noteId}
+                    id={noteId}
+                    title={title}
+                    content={content}
+                    updatedAt={updatedAt}
+                    isArchived={isArchived}
+                    tags={tags}
+                  />
+                );
+              }
+            }
+          )}
       </div>
       {showCreate && <CreateEditNote setShowCreate={setShowCreate} />}
     </main>

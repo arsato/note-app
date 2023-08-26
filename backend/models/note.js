@@ -11,7 +11,7 @@ const getNoteModel = (sequelize, { DataTypes }) => {
       allowNull: false,
     },
     content: {
-      type: DataTypes.STRING,
+      type: DataTypes.TEXT,
       allowNull: true,
     },
     isArchived: {
@@ -20,6 +20,10 @@ const getNoteModel = (sequelize, { DataTypes }) => {
       allowNull: false,
     },
   });
+
+  Note.associate = (models) => {
+    Note.belongsToMany(models.Tag, { through: models.NoteTag });
+  };
 
   return Note;
 };

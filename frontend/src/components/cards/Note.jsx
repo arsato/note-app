@@ -5,7 +5,7 @@ import NoteDetail from "../modals/NoteDetail";
 import axios from "axios";
 import Context from "../../Context";
 
-const Note = ({ id, title, content, updatedAt, isArchived }) => {
+const Note = ({ id, title, content, updatedAt, isArchived, tags }) => {
   const [showDelete, setShowDelete] = useState(false);
   const [showCreate, setShowCreate] = useState(false);
   const [showDetail, setShowDetail] = useState(false);
@@ -102,6 +102,7 @@ const Note = ({ id, title, content, updatedAt, isArchived }) => {
           content={content}
           updatedAt={updatedAt}
           isArchived={isArchived}
+          tags={tags}
           setShowCreate={setShowCreate}
         />
       )}
@@ -112,6 +113,7 @@ const Note = ({ id, title, content, updatedAt, isArchived }) => {
           content={content}
           updatedAt={updatedAt}
           isArchived={isArchived}
+          tags={tags}
           setShowDetail={setShowDetail}
         />
       )}
