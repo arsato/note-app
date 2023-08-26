@@ -29,3 +29,4 @@ You must have nodejs(v18.15.0) and  npm (9.4.0) installed, move to frontend dire
 	- React-router-dom: ^6.15.0
     - axios: ^1.4.0
     - concurrently: ^8.2.1
+    - Tailwindcss: ^3.3.3
