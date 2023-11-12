@@ -3,7 +3,7 @@ import axios from "axios";
 import Context from "../../Context";
 
 const Delete = ({ id, setShowDelete, isArchived }) => {
-  const url = "http://localhost:3000/api/notes";
+  const url = "https://noteback-f4ao.onrender.com/api/notes";
   const { setUserNotes } = useContext(Context);
 
   const getData = async () => {

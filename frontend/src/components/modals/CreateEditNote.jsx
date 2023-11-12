@@ -11,7 +11,7 @@ const CreateEditNote = ({
   isArchived,
   tags,
 }) => {
-  const url = "http://localhost:3000/api";
+  const url = "https://noteback-f4ao.onrender.com/api";
   const { setUserNotes, setTagNames } = useContext(Context);
   const [formData, setFormData] = useState({
     title: "",

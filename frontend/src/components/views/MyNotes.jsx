@@ -13,7 +13,7 @@ const MyNotes = () => {
   const [filters, setFilter] = useState({});
   const [loaded, setLoaded] = useState(false);
 
-  const url = "http://localhost:3000/api";
+  const url = "https://noteback-f4ao.onrender.com/api";
 
   const handleFilters = ({ target: { value, name } }) => {
     const field = {};

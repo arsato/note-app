@@ -10,7 +10,7 @@ const Note = ({ id, title, content, updatedAt, isArchived, tags }) => {
   const [showCreate, setShowCreate] = useState(false);
   const [showDetail, setShowDetail] = useState(false);
   const { setUserNotes } = useContext(Context);
-  const url = "http://localhost:3000/api/notes";
+  const url = "https://noteback-f4ao.onrender.com/api";
 
   const formatDate = (dateString) => {
     const options = { year: "numeric", month: "long", day: "numeric" };

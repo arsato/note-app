@@ -14,7 +14,7 @@ const Archived = () => {
   const [tags, setTags] = useState({});
   const [tagNames, setTagNames] = useState([]);
 
-  const url = "http://localhost:3000/api";
+  const url = "https://noteback-f4ao.onrender.com/api";
 
   const getData = async () => {
     const noteEndpoint = "/notes";
