@@ -15,6 +15,9 @@ router.get("/notes", notes.findAllNotesTags);
 
 router.post("/tags", notes.createTag);
 router.get("/tags", notes.findAllTags);
+router.get("/tags/:id", notes.findOneTag);
+router.delete("/tags/:id", notes.deleteTag);
+router.delete("/tags", notes.deleteTagWithNoRelation);
 
 router.get("/notes/tags/:tagname", notes.findNotesSpecificTag);
 

@@ -1,3 +1,5 @@
+const { Op } = require('sequelize')
+const Sequelize = require("sequelize");
 const db = require("../models");
 const Note = db.models.Note;
 const Tag = db.models.Tag;
@@ -81,6 +83,20 @@ exports.findOneNote = (req, res) => {
     });
 };
 
+exports.findOneTag = (req, res) => {
+  const id = req.params.id;
+  Tag.findOne({ where: { tagId: id } })
+    .then((data) => {
+      res.send(data);
+    })
+    .catch((err) => {
+      res.status(500).send({
+        message: err.message || "Some error occurred while retrieving notes.",
+      });
+    });
+};
+
+
 exports.findAllActive = (req, res) => {
   Note.findAll({ where: { isArchived: false } })
     .then((data) => {
@@ -149,6 +165,56 @@ exports.deleteNote = (req, res) => {
     .catch((err) => {
       res.status(500).send({
         message: "Could not delete Note with id=" + id,
+      });
+    });
+};
+
+exports.deleteTag = (req, res) => {
+  const id = req.params.id;
+
+  Tag.destroy({
+    where: { tagId: id },
+  })
+    .then((num) => {
+      if (num == 1) {
+        res.send({
+          message: "Note was deleted successfully!",
+        });
+      } else {
+        res.send({
+          message: `Cannot delete Note with id=${id}. Maybe the Note was not found!`,
+        });
+      }
+    })
+    .catch((err) => {
+      res.status(500).send({
+        message: "Could not delete Note with id=" + id,
+      });
+    });
+};
+
+exports.deleteTagWithNoRelation = (req, res) => {
+  Tag.destroy({
+    where: {
+      tagId: {
+        [Op.not] : [
+          Sequelize.literal('SELECT "tagTagId" from "notetags"')
+    ],
+  }}})
+    .then((num) => {
+      if (num == 1) {
+        res.send({
+          message: "Note was deleted successfully!",
+        });
+      } else {
+        res.send({
+          message: `Cannot delete Note with id=${id}. Maybe the Note was not found!`,
+        });
+      }
+    })
+    .catch((err) => {
+      res.status(500).send({
+        message: err.message || "Some error occurred while cleaning tags.",
       });
     });
 };
@@ -262,7 +328,7 @@ exports.findNoteTags = (req, res) => {
     })
     .catch((err) => {
       res.status(500).send({
-        message: err.message || "Some error occurred while retrieving notes.",
+        message: err.message || "Some error occurred while retrieving note tags.",
       });
     });
 };

@@ -63,7 +63,7 @@ const MyNotes = () => {
             id="category"
             className="border border-gray-300 rounded-xl pl-8 text-gray-600 h-10 pr-8 bg-white hover:cursor-pointer hover:bg-gray-100 ease-in-out duration-300"
           >
-            <option value="all" selected="selected" defaultChecked>
+            <option value="all" defaultChecked>
               Category
             </option>
             {loaded &&
@@ -104,7 +104,9 @@ const MyNotes = () => {
                   />
                 );
               }
-            })}
+            })
+            .sort((a,b) => a.updatedAt - b.updatedAt)
+            }
       </div>
       {showCreate && <CreateEditNote setShowCreate={setShowCreate} />}
     </main>

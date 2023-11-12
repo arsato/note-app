@@ -14,11 +14,10 @@ const CreateEditNote = ({
   const url = "http://localhost:3000/api";
   const { setUserNotes, setTagNames } = useContext(Context);
   const [formData, setFormData] = useState({
-    title: title,
-    content: content,
+    title: "",
+    content: "",
   });
   const [categories, setCategories] = useState([]);
-  const [thisTags, setThisTags] = useState([]);
   const [newCategory, setNewCategory] = useState({});
 
   const getData = async () => {
@@ -39,11 +38,21 @@ const CreateEditNote = ({
           tagArray.push(ele.name);
         });
         setCategories(tagArray);
+        try {
+          const allTagsEndpoint = `/notes/${id}/tags`;
+          const { data: noteTagList } = await axios.get(url + allTagsEndpoint);
+          let newArr = [];
+          const newTagList = noteTagList[0].tags;
+          newTagList.map((ele) => {
+            newArr.push({ tagId: ele.tagId, name: ele.name });
+          });
+          console.log(newArr);
+          setCategories(newArr);
+        } catch (error) {
+          console.error(error);
+        }
       }
       setUserNotes(notesList);
-      const allTagsEndpoint = `/notes/${id}/tags`;
-      const { data: noteTagList } = await axios.get(url + allTagsEndpoint);
-      setThisTags(noteTagList);
     } catch (error) {
       console.log(error);
     }
@@ -62,16 +71,6 @@ const CreateEditNote = ({
       handleUpdate();
     } else {
       handlePublish();
-    }
-  };
-
-  const removeTag = (e) => {
-    const index = categories.findIndex(({ name }) => name === e.target.value);
-    if (index !== -1) {
-      setCategories([
-        ...categories.slice(0, index),
-        ...categories.slice(index + 1),
-      ]);
     }
   };
 
@@ -136,8 +135,7 @@ const CreateEditNote = ({
     try {
       let response = await axios.post(url + tagsEndpoint, newCategory);
       const tagId = response.data.tagId;
-      console.log(response);
-      console.log(tagId);
+      console.log(response.data);
       const publishTag = {
         noteId: id,
         tagId: tagId,
@@ -149,24 +147,24 @@ const CreateEditNote = ({
     }
   };
 
-  const removeCategory = async () => {
-    const tagsEndpoint = "/tags";
-    const relationEndpoint = "/relations";
-    const deleteEndpoint = `/relations/${id}/${tag_id}`;
+  const removeCategory = async (tag_id) => {
+    const deleteRelationEndpoint = `/relations/${id}/${tag_id}`;
+    const deleteUnusedTagsEndpoint = `/tags`;
     try {
-      let response = await axios.post(url + tagsEndpoint, newCategory);
-      const tagId = response.data.tagId;
-      console.log(response);
-      console.log(tagId);
-      const publishTag = {
-        noteId: id,
-        tagId: tagId,
-      };
-      await axios.post(url + relationEndpoint, publishTag);
+      await axios.delete(url + deleteRelationEndpoint);
+      await axios.delete(url + deleteUnusedTagsEndpoint);
       getData();
     } catch (error) {
       console.log(error);
     }
+  };
+
+  const removeTag = (e) => {
+    console.log(e.target.id);
+    let filtered = categories.filter((el) => el.tagId != e.target.id);
+    console.log(filtered);
+    setCategories(filtered);
+    removeCategory(e.target.id);
   };
 
   useEffect(() => {
@@ -219,20 +217,18 @@ const CreateEditNote = ({
                   Categories
                 </label>
                 <ul className="flex gap-4 p-2 w-full md:w-5/6">
-                  {categories.map((ele) => {
-                    return (
-                      <li key={ele + "A"}>
-                        {`#${ele}`}
-                        <a
-                          onClick={removeTag}
-                          value={ele}
-                          className="hover:cursor-pointer text-sm"
-                        >
-                          ❌
-                        </a>
-                      </li>
-                    );
-                  })}
+                  {categories.map((ele) => (
+                    <li key={ele.tagId}>
+                      {`#${ele.name}`}
+                      <a
+                        onClick={removeTag}
+                        id={ele.tagId}
+                        className="hover:cursor-pointer text-sm"
+                      >
+                        ❌
+                      </a>
+                    </li>
+                  ))}
                 </ul>
               </div>
               <div className="flex items-center justify-end mb-6">

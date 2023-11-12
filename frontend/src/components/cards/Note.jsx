@@ -63,7 +63,10 @@ const Note = ({ id, title, content, updatedAt, isArchived, tags }) => {
     <div>
       <a className="grid grid-cols-6 place-items-center w-[450px] p-2 bg-gray-200 border border-gray-400 rounded-lg shadow hover:bg-gray-100">
         <i className="col-span-1 fa-solid fa-note-sticky fa-5x"></i>
-        <div onClick={() => setShowDetail(true)} className="col-span-4 hover:cursor-pointer">
+        <div
+          onClick={() => setShowDetail(true)}
+          className="col-span-4 hover:cursor-pointer"
+        >
           <h5 className="mb-2 text-2xl font-bold tracking-tight text-black">
             {title}
           </h5>
@@ -106,7 +109,7 @@ const Note = ({ id, title, content, updatedAt, isArchived, tags }) => {
           setShowCreate={setShowCreate}
         />
       )}
-            {showDetail && (
+      {showDetail && (
         <NoteDetail
           id={id}
           title={title}

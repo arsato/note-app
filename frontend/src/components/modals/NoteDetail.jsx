@@ -26,7 +26,7 @@ const NoteDetail = ({
               </div>
               <div className=" flex gap-4 items-center justify-end mb-6">
                 {tags.map((ele) => (
-                    <h3>
+                    <h3 key={ele.tagId}>
                       {`#${ele.name}`}
                     </h3>
                 ))}
