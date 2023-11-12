@@ -1,6 +1,0 @@
-DB_HOST = localhost
-DB_NAME = notes
-DB_USER = postgres
-DB_PASS = DB14!
-DB_DIALECT = postgres
-PORT = 3000
